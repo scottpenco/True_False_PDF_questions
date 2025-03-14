@@ -6,7 +6,7 @@ import os
 from openai import AsyncOpenAI
 
 # Set OpenAI API Key
-client = openai(os.getenv("OPENAI_API_KEY"))
+client = openai(api_key= os.getenv("OPENAI_API_KEY"))
 
 # Function to extract text from PDF
 def extract_text_from_pdf(pdf_file):
