@@ -2,9 +2,10 @@ import streamlit as st
 import fitz  # PyMuPDF
 import openai
 import random
+from openai import AsyncOpenAI
 
 # Set OpenAI API Key
-openai.api_key = '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'
+openai.api_key = os.getenv("OPENAI_API_KEY")
 
 # Function to extract text from PDF
 def extract_text_from_pdf(pdf_file):
@@ -14,18 +15,31 @@ def extract_text_from_pdf(pdf_file):
         text += page.get_text("text") + "\n"
     return text
 
-# Function to generate true/false questions
-def generate_tf_questions(text):
-    prompt = f"Extract key facts from the following text and convert them into true/false questions:\n{text[:2000]}"
+# Function to extract text from PDF
+def extract_text_from_pdf(pdf_file):
+    """Extracts text from a PDF file uploaded via Streamlit."""
+    try:
+        doc = fitz.open(stream=pdf_file.read(), filetype="pdf")
+        text = ""
+        for page in doc:
+            text += page.get_text("text") + "\n"
+        return text
+    except Exception as e:
+        return f"Error reading PDF: {e}"
 
-    response = openai.ChatCompletion.create(
+# Function to generate true/false questions using OpenAI
+def generate_tf_questions(text):
+    """Generates true/false questions from the extracted text."""
+    prompt = f"Generate 5 true/false questions based on the following academic text:\n{text[:2000]}"
+
+    response = client.chat.completions.create(
         model="gpt-3.5-turbo",
         messages=[{"role": "user", "content": prompt}]
     )
 
-    questions = response["choices"][0]["message"]["content"].split("\n")
+    questions = response.choices[0].message.content.split("\n")
     tf_questions = []
-    
+
     for q in questions:
         if q.strip().endswith("?"):
             answer = random.choice(["True", "False"])
@@ -41,7 +55,7 @@ if uploaded_file:
     st.write("Extracting text and generating questions...")
     extracted_text = extract_text_from_pdf(uploaded_file)
     
-    if extracted_text:
+    if extracted_text and "Error" not in extracted_text:
         questions = generate_tf_questions(extracted_text)
         st.session_state["questions"] = questions
         st.session_state["current_index"] = 0
