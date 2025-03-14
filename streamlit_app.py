@@ -8,7 +8,7 @@ openai.api_key = 'sk-proj-1qv2Gdz6695UPdvKG1C9jd2_T7R-kvypn7Iq2HursSHaB5_YqtJ2VJ
 
 # Function to extract text from PDF
 def extract_text_from_pdf(pdf_file):
-    doc = fitz.open(streamlit_uploaded_file=pdf_file, filetype='pdf')
+    doc = fitz.open(stream=pdf_file.read(), filetype='pdf')
     text = ""
     for page in doc:
         text += page.get_text("text") + "\n"
