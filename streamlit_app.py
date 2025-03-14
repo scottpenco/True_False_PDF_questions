@@ -4,9 +4,12 @@ import openai
 import random
 import os
 from openai import OpenAI
+from dotenv import load_dotenv 
 
 # Set OpenAI API Key
-client = OpenAI(api_key= os.getenv("OPENAI_API_KEY"))
+load_dotenv()
+apikey = os.getenv("OPENAI_API_KEY")
+client = OpenAI(api_key=api_key)
 
 # Function to extract text from PDF
 def extract_text_from_pdf(pdf_file):
