@@ -3,10 +3,10 @@ import fitz  # PyMuPDF
 import openai
 import random
 import os
-from openai import AsyncOpenAI
+from openai import OpenAI
 
 # Set OpenAI API Key
-client = openai(api_key= os.getenv("OPENAI_API_KEY"))
+client = OpenAI(api_key= os.getenv("OPENAI_API_KEY"))
 
 # Function to extract text from PDF
 def extract_text_from_pdf(pdf_file):
