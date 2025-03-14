@@ -4,7 +4,7 @@ import openai
 import random
 
 # Set OpenAI API Key
-openai.api_key = "your-api-key"
+openai.api_key = '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'
 
 # Function to extract text from PDF
 def extract_text_from_pdf(pdf_file):
