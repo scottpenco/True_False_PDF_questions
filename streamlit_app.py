@@ -2,6 +2,7 @@ import streamlit as st
 import fitz  # PyMuPDF
 import openai
 import random
+import os
 from openai import AsyncOpenAI
 
 # Set OpenAI API Key
